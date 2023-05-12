@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for post in posts %}
+
+        <div class="card mt-2">
+        <div class="card-header"><strong>@{{post.auther.username}}</strong></div>
+        <div class="card-body d-flex flex-row justify-content-between">
+            <div>
+                <h5 class="card-title">{{post.title}}</h5>
+                <p>{{post.description|safe}}</p>
+            </div>
+            <div>
+
+                {% if perms.blogs.can_delete_posts %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <Button class="btn btn-danger" type="submit" value="{{post.id}}" name="delete-post">Delete</Button>
+                </form>
+                {% endif %}
+                {% if perms.auth.can_ban_users and user != post.auther and 'default' in user.groups.all %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <Button class="btn btn-warning mt-2" style="padding: 5px 22px;" type="submit" value="{{post.auther.id}}" name="ban-user">Ban</Button>
+                </form>
+
+                {% endif %}
+                {% if user.is_authenticated %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Comment
+                </button>
+                {% endif %}
+
+
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel">Comments</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <h4>{{notification.body}}</h4>
+                          <hr>
+                            <h5>By accepting this invitation:</h5>
+
+                        </div>
+                        <div class="modal-footer">
+                          <form method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" name="accept" value="{{notification.id}}" type="submit">Accept</button>
+                            <button class="btn btn-danger" name="reject" value="{{notification.id}}" type="submit">reject</button>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+            </div>
+            </div>
+            <div class="card-footer text-muted">
+                {{post.created_at}}
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

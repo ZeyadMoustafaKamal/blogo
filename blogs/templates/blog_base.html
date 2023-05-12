@@ -1,0 +1,37 @@
+
+      
+      <div style="width:3.5%;" class="col-1 sidebar">
+
+        <nav class="nav flex-column">
+          <a class="nav-link" href="{% url 'blog_details' blog_code=request.resolver_match.kwargs.blog_code %}">
+            <i class="fa fa-home" title="Home"></i>
+          </a>
+          {% if perms.blogs.can_create_posts %}
+          <a class="nav-link" href="{% url 'create_post' blog_code=request.resolver_match.kwargs.blog_code %}">
+            <i class="fas fa-pen fa-lg" title="Post"></i>
+          </a>
+          {% endif %}
+          
+          <a class="nav-link" href="{% url 'blog_members' blog_code=request.resolver_match.kwargs.blog_code %}">
+            <i class="fa fa-users" title="Members"></i>
+          </a>
+          <a class="nav-link" href="{% url 'blog_settings' blog_code=request.resolver_match.kwargs.blog_code %}">
+            <i class="fa fa-cog" title="Settings"></i>
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fa fa-question-circle"></i>
+          </a>
+          <hr>
+          <a class="nav-link" href="#">
+            <i class="fa fa-envelope"></i>
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fa fa-star"></i>
+          </a>
+          <a class="nav-link" href="#">
+            <i class="fa fa-trash"></i>
+          </a>
+        </nav>
+      </div>
+      
+      

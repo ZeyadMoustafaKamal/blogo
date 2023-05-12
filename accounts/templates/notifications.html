@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load template_tags %}
+{% block content %}
+
+{% for notification in notifications %}
+
+<div class="card" style="width: 18rem;display: inline-block;">
+    <img src="{{notification.blog.image.url}}" class="card-img-top" alt="not found">
+    <div {% if notification.is_read %} style="background-color: #aba0a0;"{% endif %} class="card-body">
+      <h5 class="card-title">invitation</h5>
+      <p class="card-text">{{notification.body}}</p>
+      
+    
+      <!-- Button trigger modal -->
+      {% if not notification.is_read %}
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{notification.id}}">
+        View
+      </button>
+      {% endif %}
+
+
+      
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop{{notification.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Invitation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>{{notification.body}}</h4>
+        <hr>
+          <h5>By accepting this invitation:</h5>
+         {% for permission in notification.permissions|split:"," %}
+
+        <ul>
+            <li>You {{permission|replace|title}}</li>
+        </ul>
+      {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <form method="post">
+          {% csrf_token %}
+          <button class="btn btn-primary" name="accept" value="{{notification.id}}" type="submit">Accept</button>
+          <button class="btn btn-danger" name="reject" value="{{notification.id}}" type="submit">reject</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+      <div class="card-footer mt-2">{{notification.timestamp}}</div>
+    </div>
+</div>
+
+
+
+{% endfor %}
+
+
+{% endblock %}
+
+
+<button type="button" class="btn btn-primary position-relative">
+  Inbox
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    99+
+    <span class="visually-hidden">unread messages</span>
+  </span>
+</button>
+

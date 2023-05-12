@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags%}
+{% block content %}
+
+
+
+<div class="container-fluid">
+  <div class="row">
+
+    {% include 'blog_base.html' %}
+
+
+    <div class="col-md-9 p-5">
+      <div class="row">
+          <div class="col-md-8">
+            <!-- The main content goes here -->
+
+            
+            <div class="container mt-5">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Posts</h5>
+                      <p class="card-text fs-1 fw-bold text-center">{{posts_count}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Comments</h5>
+                      <p class="card-text fs-1 fw-bold text-center">100</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Members</h5>
+                      <p class="card-text fs-1 fw-bold text-center">{{members_count}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

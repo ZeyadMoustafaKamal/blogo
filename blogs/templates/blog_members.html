@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+  
+      {% include 'blog_base.html' %}
+  
+      <div class="col-md-9 p-5">
+        <div class="row">
+            <div class="col-md-8">
+                {% with "perms.blogs.can_invite_members"|add:blog.blog_code as can_invite_members %}
+                {% if can_invite_members %}
+                
+                <form method="post">
+
+                    {% csrf_token %}
+                      {{form|crispy}}
+
+                    <button type="submit" class="btn btn-primary">Send</button>
+                
+                </form>
+                {% endif %}
+                {% endwith %}
+                {% for member in members %}
+                
+                {{member.username}} <br>  
+                &#10003;
+
+                &#10060;
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
