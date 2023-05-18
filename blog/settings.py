@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     
     'crispy_forms',
     'crispy_bootstrap5',
-    'tinymce',
     'debug_toolbar',
-    'rest_framework'
+    'rest_framework',
+    'drfswagger'
 ]
 
 # rest framwork and simple jwt
@@ -68,32 +68,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
-# TinyMCE config
-
-TINYMCE_DEFAULT_CONFIG = {
-    'height': 200,
-    'width': 900,
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 10,
-    'selector': 'textarea.tinymce',
-    'theme': 'modern',
-    'plugins': '''
-        advlist autolink lists link image charmap print preview hr anchor
-        searchreplace wordcount visualblocks code fullscreen
-        insertdatetime media nonbreaking save table contextmenu
-        directionality emoticons template paste textcolor colorpicker textpattern
-    ''',
-    'toolbar': '''
-        undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify |
-        bullist numlist outdent indent | link image | print preview media fullpage |
-        forecolor backcolor emoticons | fontsizeselect
-    ''',
-    'fontsize_formats': '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
-}
-
-TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/khgo7qw2j3rly9d0nklt7ccwy2b8j696np0a0xlmt6gkxxo0/tinymce/5/tinymce.min.js'
-
-TINYMCE_COMPRESSOR = False
 
 
 MIDDLEWARE = [

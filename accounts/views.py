@@ -11,6 +11,8 @@ from .models import CustomUser
 
 class SignUpView(CreateAPIView):
     serializer_class = SignUpSerializer
+    authentication_classes = ()
+    permission_classes = ()
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         user = CustomUser.objects.get(email=response.data.get('email'))
@@ -45,7 +47,7 @@ class UpdateNotificationView(UpdateAPIView):
     serializer_class = UpdateNotificationSerializer
 
     def get_object(self):
-        notification_id = self.request.data.get('id')
+        notification_id = self.request.data.get('notification_id')
         notification = get_object_or_404(Notification,id=notification_id)
         return notification
 

@@ -33,7 +33,7 @@ class UpdateNotificationSerializer(serializers.ModelSerializer):
     choice = serializers.BooleanField(required=False)
     class Meta:
         model = Notification
-        fields = 'id','choice'
+        fields = 'notification_id','choice'
 
     def update(self, instance, validated_data):
 
@@ -62,8 +62,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2','user_code']
-        extra_kwargs = {'user_code':{'required':False}}
+        fields = ['username', 'email', 'password', 'password2']
 
     def validate_password2(self, value):
         password1 = self.get_initial().get('password', '')
