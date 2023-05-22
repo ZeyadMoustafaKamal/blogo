@@ -62,7 +62,7 @@ class ListCommentsView(ListAPIView):
     pagination_class.page_size = 25
 
     def get_queryset(self):
-        post_id = self.request.data.get('post')
+        post_id = self.request.data.get('post_id')
         post = get_object_or_404(Post, id=post_id)
         queryset = Comment.objects.filter(post=post)
         return queryset
@@ -70,7 +70,7 @@ class ListCommentsView(ListAPIView):
 class DeleteCommentView(DestroyAPIView):
     permission_classes  = IsAuthenticated,IsCommentAuthor
     def get_object(self):
-        comment_id = self.request.data.get('comment')
+        comment_id = self.request.data.get('comment_id')
         comment = get_object_or_404(Comment, id=comment_id)
         self.check_object_permissions(self.request,comment)
         return comment

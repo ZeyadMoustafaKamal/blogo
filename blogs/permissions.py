@@ -1,29 +1,28 @@
 from django.contrib.auth.models import Permission, Group
-from django.contrib.contenttypes.models import ContentType
 
 from rest_framework.permissions import BasePermission
 
 from .models import Blog
 
-import uuid
+try:
+    from django.contrib.contenttypes.models import ContentType
+    content_type = ContentType.objects.get_for_model(Blog)
+except ImportError:
+    # The user didn't run migrations
+    content_type = None
 
 class CanManageBlog(BasePermission):
-    def has_permission(self, request, view):
-        permission_name = f"blogs.can_manage_blog{request.data.get('blog')}"
+    def has_object_permission(self, request, view, obj):
+        permission_name = f"blogs.can_manage_blog{obj.id}"
         return request.user.has_perm(permission_name)
-
 class CanManagePosts(BasePermission):
-    def has_permission(self, request, view):
-        permission_name = f"blogs.can_manage_posts{uuid.UUID(request.data.get('blog'))}"
+    def has_object_permission(self, request, view, obj):
+        permission_name = f"blogs.can_manage_posts{obj.id}"
         return request.user.has_perm(permission_name)
-
 class CanManageMembers(BasePermission):
-    def has_permission(self, request, view):
-        permission_name = f"blogs.can_manage_members{request.data.get('blog')}"
+    def has_object_permission(self, request, view, obj):
+        permission_name = f"blogs.can_manage_members{obj.id}"
         return request.user.has_perm(permission_name)
-
-
-content_type = ContentType.objects.get_for_model(Blog)
 
 
 def create_blog_permissions_and_groups(id):

@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'debug_toolbar',
     'rest_framework',
-    'drfswagger'
+    'drfswagger',
+    'corsheaders'
+
 ]
 
 # rest framwork and simple jwt
@@ -67,7 +69,14 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
+# swagger
 
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_FIELD_INSPECTORS': [
+        'blog.inspectors.UUIDFieldInspector',
+    ],
+}
 
 
 MIDDLEWARE = [
@@ -80,7 +89,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # third party
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
 INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'blog.urls'

@@ -26,11 +26,12 @@ class CreatePostSerializer(serializers.ModelSerializer):
         fields = ['title','description','auther','blog']
         extra_kwargs = {
             'auther':{'required':False},
+            'blog':{'source':'blog_id'}
         }
     
     def create(self, validated_data):
         auther = self.context['request'].user
-        blog = get_object_or_404(Blog,id=self.context.get('request').data.get('blog'))
+        blog = get_object_or_404(Blog,id=self.context.get('request').data.get('blog_id'))
         validated_data['auther'] = auther
         validated_data['blog'] = blog
         post = Post.objects.create(
@@ -42,7 +43,7 @@ class EditPostSerializer(serializers.ModelSerializer):
     auther = UserSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('title', 'description','auther')
+        fields = ('title', 'description')
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title')

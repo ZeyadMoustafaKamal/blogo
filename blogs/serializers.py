@@ -13,6 +13,7 @@ from posts.models import Post
 User = get_user_model()
 
 class BlogsSerializer(serializers.ModelSerializer):
+    # This should give me the blogs that the user owns and the blogs that the user memeber in
     members = UserSerializer(many=True)
     class Meta:
         model = Blog
@@ -28,7 +29,6 @@ class CreateBlogSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'image':{'required':False},
-            'blog_code':{'required':False}
         }
     def create(self, validated_data):
         owner =  self.context['request'].user
@@ -44,6 +44,8 @@ class CreateBlogSerializer(serializers.ModelSerializer):
 
 class BlogDetailsSerializer(serializers.Serializer):
 
+    # I just used the normal Serializer class not the ModelSerializer because
+    # I wanted to show you my skills in writing deffirent types of serializers
     posts_count = serializers.SerializerMethodField()
     members = serializers.SerializerMethodField()
     name = serializers.CharField()
@@ -69,10 +71,8 @@ class UpdateBlogSerializer(serializers.ModelSerializer):
         fields = ['name','description']
     
     def validate_name(self,value):
-
         if Blog.objects.filter(name=value).exclude(id=self.instance.id).exists():
             raise serializers.ValidationError('This name is already taken')
-
         return value
     def update(self, instance, validated_data):
         
@@ -87,12 +87,11 @@ class InviteMemberSerializer(serializers.ModelSerializer):
     sender = UserSerializer(read_only=True)
     receiver = serializers.CharField(max_length=25)
 
-    blog = serializers.UUIDField()
+    blog = serializers.UUIDField(source='blog_id')
 
     class Meta:
         model = Notification
         fields = ['sender','receiver','body','blog','permissions']
-
 
     def validate_receiver(self,value):
         
@@ -105,17 +104,13 @@ class InviteMemberSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('You can\' send an invitaion for your self')
         return receiver
     
-    
     def create(self, validated_data,*args, **kwargs):
 
-        blog = get_object_or_404(Blog, id=self.validated_data.get('blog'))
-
+        blog = get_object_or_404(Blog, id=self.validated_data.get('blog_id'))
         validated_data['blog'] = blog
 
         permissions = self.validated_data.get('permissions').split(',')
-
         permissions = [permission + str(blog.id) + ',' for permission in permissions]
-
         validated_data['permissions'] = ''.join(permissions)[:-1]
 
         validated_data['sender'] = self.context.get('request').user
@@ -124,3 +119,4 @@ class InviteMemberSerializer(serializers.ModelSerializer):
             **validated_data)
 
         return notification
+

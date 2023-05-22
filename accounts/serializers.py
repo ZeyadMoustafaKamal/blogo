@@ -21,8 +21,6 @@ class NotificationsSerializer(serializers.ModelSerializer):
     receiver = UserSerializer(read_only=True)
     blog = BlogsSerializer(read_only=True)
 
-    
-
     class Meta:
         model = Notification
         fields = 'id', 'sender', 'receiver', 'body', 'blog', 'permissions', 'timestamp', 'is_read'
@@ -89,7 +87,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'password', 'user_code']
+        fields = ['email', 'password']
     def validate(self, attrs):
         user = authenticate(**attrs)
         if not user:
@@ -102,11 +100,9 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         fields = 'username',
     def validate_username(self,value):
 
-        current_user_username= self.context.get('request').user.username
-
+        current_user_username = self.context.get('request').user.username
         if User.objects.filter(username=value).exclude(username=current_user_username).exists():
             raise serializers.ValidationError('The username us already taken')
-        
         return value
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username')

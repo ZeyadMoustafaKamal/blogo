@@ -17,7 +17,6 @@ class Blog(models.Model):
     name = models.CharField(max_length=75,unique=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
-    blog_code = models.CharField(max_length=25)
     image = models.ImageField(default='blog-default.png', upload_to='media/blog_images')
 
     def __str__(self):
