@@ -12,9 +12,12 @@ from posts.models import Post
 
 User = get_user_model()
 
+MAIN_PERMISSIONS = ['can_manage_posts','can_manage_blog','can_manage_members']
+
+
 class BlogsSerializer(serializers.ModelSerializer):
     # This should give me the blogs that the user owns and the blogs that the user memeber in
-    members = UserSerializer(many=True)
+    members = UserSerializer(many=True,read_only=True)
     class Meta:
         model = Blog
         fields = '__all__'
@@ -87,14 +90,13 @@ class InviteMemberSerializer(serializers.ModelSerializer):
     sender = UserSerializer(read_only=True)
     receiver = serializers.CharField(max_length=25)
 
-    blog = serializers.UUIDField(source='blog_id')
+    blog_id = serializers.UUIDField(source='blog',required=False)
 
     class Meta:
         model = Notification
-        fields = ['sender','receiver','body','blog','permissions']
+        fields = ['sender','receiver','body','permissions','blog_id']
 
     def validate_receiver(self,value):
-        
         receiver = get_object_or_404(User,email=value)
         if not receiver:
             raise serializers.ValidationError('No User with this email')
@@ -103,10 +105,15 @@ class InviteMemberSerializer(serializers.ModelSerializer):
         if self.context.get('request').user == receiver:
             raise serializers.ValidationError('You can\' send an invitaion for your self')
         return receiver
+    def validate_permissions(self, value):
+        for permission in value.split(','):
+            if permission not in MAIN_PERMISSIONS:
+                raise serializers.ValidationError(f'The {permission} not a valid permission')
+        return value
     
     def create(self, validated_data,*args, **kwargs):
-
-        blog = get_object_or_404(Blog, id=self.validated_data.get('blog_id'))
+        blog_id = validated_data.get('blog')
+        blog = get_object_or_404(Blog, id=blog_id)
         validated_data['blog'] = blog
 
         permissions = self.validated_data.get('permissions').split(',')
@@ -119,4 +126,3 @@ class InviteMemberSerializer(serializers.ModelSerializer):
             **validated_data)
 
         return notification
-

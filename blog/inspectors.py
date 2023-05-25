@@ -3,6 +3,7 @@ from drf_yasg import openapi
 from rest_framework.fields import UUIDField
 
 class UUIDFieldInspector(FieldInspector):
+    # this should be an inspector for the UUID field
     def field_to_swagger_object(self, field):
         swagger_object = super().field_to_swagger_object(field)
         if isinstance(field, UUIDField):
@@ -11,6 +12,3 @@ class UUIDFieldInspector(FieldInspector):
                 'format': openapi.FORMAT_UUID,
             })
         return swagger_object
-
-
-

@@ -7,7 +7,6 @@ from . import views
 urlpatterns = [
 
     path('signup/', views.SignUpView.as_view() , name='signup'),
-    
     path('notifications/', views.ListNotificationsView.as_view(), name='notifications'),
     path('update/',views.UpdateUserInfoView.as_view(),name='update_user_info'),
     path('notifications/update/',views.UpdateNotificationView.as_view(), name='update_notification'),

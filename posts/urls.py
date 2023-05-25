@@ -5,7 +5,7 @@ urlpatterns = [
     path('all/', views.ListPostsView.as_view(), name='all_posts'),
     path('get/',views.RetrievePostView.as_view(),name='get_post'),
     path('create/',views.CreatePostView.as_view(),name='create_post'),
-    path('post/',views.EditPostView.as_view(), name='edit_post'),
+    path('edit/',views.EditPostView.as_view(), name='edit_post'),
     path('delete/',views.DeletePostView.as_view(),name='delete_post'),
 
     path('comments/create/', views.CreateCommentView.as_view(), name='create_comment'),

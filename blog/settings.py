@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'debug_toolbar',
     'rest_framework',
-    'drfswagger',
+    'drf_yasg',
     'corsheaders'
 
 ]

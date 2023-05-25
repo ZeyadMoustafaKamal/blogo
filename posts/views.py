@@ -14,17 +14,19 @@ from blogs.permissions import CanManagePosts
 
 class ListPostsView(ListAPIView):
 
-    authentication_classes = ()
-    permission_classes = ()
-    queryset = Post.objects.all()
-
     serializer_class = ListPostsSerializer
     pagination_class = PageNumberPagination
-
     pagination_class.page_size = 20
+
+    authentication_classes = ()
+    permission_classes = ()
+
+    queryset = Post.objects.all()
 
 class RetrievePostView(RetrieveAPIView):
     serializer_class = ListPostsSerializer
+    authentication_classes = ()
+    permission_classes = ()
     def get_object(self):
         post_id = self.request.data.get('post_id')
         return get_object_or_404(Post, id=post_id)

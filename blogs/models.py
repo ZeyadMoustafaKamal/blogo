@@ -32,7 +32,7 @@ class Notification(models.Model):
 
     body = models.CharField(max_length=150)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    permissions = models.CharField(max_length=250, null=True)
+    permissions = models.CharField(max_length=250)
 
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)

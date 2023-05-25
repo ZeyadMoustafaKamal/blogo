@@ -21,14 +21,11 @@ class ListPostsSerializer(serializers.ModelSerializer):
 
 class CreatePostSerializer(serializers.ModelSerializer):
     auther = UserSerializer(read_only=True)
+    blog_id = serializers.UUIDField(source='blog')
     class Meta:
         model = Post
-        fields = ['title','description','auther','blog']
-        extra_kwargs = {
-            'auther':{'required':False},
-            'blog':{'source':'blog_id'}
-        }
-    
+        fields = ['id','title','description','auther','blog_id']
+        extra_kwargs = {'id':{'read_only':True}}
     def create(self, validated_data):
         auther = self.context['request'].user
         blog = get_object_or_404(Blog,id=self.context.get('request').data.get('blog_id'))
@@ -54,11 +51,14 @@ class EditPostSerializer(serializers.ModelSerializer):
 # Comments management
 
 class CreateCommentSerializer(serializers.ModelSerializer):
+    post_id = serializers.CharField(source='post',write_only=True)
     class Meta:
         model = Comment
-        fields = 'post','content'
+        fields = 'id','post_id','content'
     def create(self, validated_data):
-
+        post_id = validated_data.get('post')
+        post = get_object_or_404(Post,id=post_id)
+        validated_data['post'] = post
         author = self.context.get('request').user
         validated_data['author'] = author
 

@@ -2,4 +2,6 @@
 *.pyc
 __pycache__/
 blog.sqlite3
-api_documentation.docx
+*.docx
+secret.txt
+data.json
