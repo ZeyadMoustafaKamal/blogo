@@ -38,9 +38,10 @@ class CreatePostSerializer(serializers.ModelSerializer):
 
 class EditPostSerializer(serializers.ModelSerializer):
     auther = UserSerializer(read_only=True)
+    blog = BlogsSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('title', 'description')
+        fields = ('title', 'description','auther','blog')
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title')
@@ -57,7 +58,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
         fields = 'id','post_id','content'
     def create(self, validated_data):
         post_id = validated_data.get('post')
-        post = get_object_or_404(Post,id=post_id)
+        post = get_object_or_404(Post, id=post_id)
         validated_data['post'] = post
         author = self.context.get('request').user
         validated_data['author'] = author

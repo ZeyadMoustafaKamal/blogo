@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView,RetrieveAPIView
+from rest_framework import status
+
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import NotificationsSerializer, SignUpSerializer, UpdateNotificationSerializer, UpdateUserSerializer
@@ -20,7 +22,7 @@ class SignUpView(CreateAPIView):
         return Response({
             'refresh_token':str(refresh_token),
             'access_token':str(refresh_token.access_token)
-        })
+        },status=status.HTTP_201_CREATED)
 
 class UserInfoView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):

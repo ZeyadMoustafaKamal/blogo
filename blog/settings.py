@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders'
-
 ]
 
 # rest framwork and simple jwt
@@ -173,16 +172,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGIN_REDIRECT_URL = '/'
-
-LOGOUT_REDIRECT_URL = '/'
-
-# the media configuration
+# media configuration
 
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = 'media/'
-
-
-
 

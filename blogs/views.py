@@ -52,14 +52,19 @@ class UpdateBlogView(UpdateAPIView):
     serializer_class = UpdateBlogSerializer
     permission_classes = IsAuthenticated,CanManageBlog
     def get_object(self):
-        blog = get_object_or_404(Blog,id=self.request.data.get('blog_id'))
+        blog_id = self.request.data.get('blog_id')
+        blog = get_object_or_404(Blog,id=blog_id)
+        self.check_object_permissions(self.request, blog)
         return blog
 
 class DeleteBlogView(DestroyAPIView):
     permission_classes = IsAuthenticated,CanManageBlog
     def get_object(self):
         blog_id = self.request.data.get('blog_id')
-        return get_object_or_404(Blog,id=blog_id)
+        blog = get_object_or_404(Blog,id=blog_id)
+        self.check_object_permissions(self.request, blog)
+        return blog
+
 
 class InviteMembersView(CreateAPIView):
 
