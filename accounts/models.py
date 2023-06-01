@@ -6,12 +6,16 @@ from django.utils.translation import gettext as _
 class CustomUser(AbstractUser):
 
     email = models.EmailField(_('email address'), unique=True)
-    user_code = models.CharField(max_length=25,null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('username',)
     objects = CustomUserManager()
-    
+
+    is_stuff = models.BooleanField(
+        _("staff status"),
+        default=False,
+        help_text=_("Designates whether the user can log into this admin site."),
+    )
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',

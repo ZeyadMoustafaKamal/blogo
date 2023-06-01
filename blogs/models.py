@@ -12,10 +12,10 @@ class Blog(models.Model):
     )
 
     owner = models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name='owner')
-    members = models.ManyToManyField(CustomUser)
+    members = models.ManyToManyField(CustomUser, related_name='members_set', blank=True)
     
     name = models.CharField(max_length=75,unique=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(default='blog-default.png', upload_to='media/blog_images')
 
@@ -28,7 +28,7 @@ class Notification(models.Model):
                           editable=False
                           )
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
-    receiver = models.ForeignKey(CustomUser,unique=False, on_delete=models.CASCADE, related_name='reciever')
+    receiver = models.ForeignKey(CustomUser,unique=False, on_delete=models.CASCADE, related_name='receiver')
 
     body = models.CharField(max_length=150)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
@@ -38,4 +38,4 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     
     def __str__(self):
-        return f'form {self.sender} , to : {self.reciever}'
+        return f'form {self.sender} , to : {self.receiver}'
